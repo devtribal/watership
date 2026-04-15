@@ -5,7 +5,7 @@ body {
     padding: 0;
     border: 0;
 
-    font-family: "Playfair Display", sans-serif;
+    font-family: "Playfair Display", serif;
 }
 
 .wrapper {
@@ -14,28 +14,68 @@ body {
     padding: 0;
     margin: 0;
 
+    height: 100vh;
+
     background-color: black;
+    color: white;
 }
 
 .task-area {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     
+    gap: 12px;
     flex: 4;
-    height: 100vh;
 
-    font-size: 3em;
+    font-size: clamp(2rem, 2.5vw, 4rem);
+    /* responsive scaling */
 
-    border: 2px solid red;
     box-sizing: border-box;
 }
 
 .widget-area {
     display: flex;
     flex: 6;
-    height: 100vh;
 
-    border: 2px solid red;
     box-sizing: border-box;
+}
+
+.task-button {
+    padding: 0.3em 0.7em;
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+
+}
+
+.task-button:hover {
+    background-color: white;
+    color: black;
+}
+
+.task-button:active {
+    transform: scale(0.95);
+}
+
+.task-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.task-message {
+    margin: 0 !important;
+    padding: 0;
+    border: 0;
 }
