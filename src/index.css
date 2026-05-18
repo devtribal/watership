@@ -20,6 +20,8 @@ body {
     color: white;
 }
 
+/* Task */
+
 .task-area {
     display: flex;
     align-items: center;
@@ -31,13 +33,6 @@ body {
 
     font-size: clamp(2rem, 2.5vw, 4rem);
     /* responsive scaling */
-
-    box-sizing: border-box;
-}
-
-.widget-area {
-    display: flex;
-    flex: 6;
 
     box-sizing: border-box;
 }
@@ -78,4 +73,35 @@ body {
     margin: 0 !important;
     padding: 0;
     border: 0;
+}
+
+/* Widget */
+
+.widget-area {
+    display: flex;
+    flex: 6;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    box-sizing: border-box;
+}
+
+/* Calendar */
+
+.month-year {
+    padding: 0.5em;
+    font-size: 1.5em;
+}
+
+.calendar-area {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: 1fr;
+    grid-column-gap: 1em;
+
+    border: 1px solid white;
+    border-radius: 4px;
+    padding: 1em;
 }
