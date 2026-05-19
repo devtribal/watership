@@ -1,16 +1,50 @@
-# React + Vite
+# watership 🌿
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+a simple habit tracker. did you do the thing today? yes or no.
 
-Currently, two official plugins are available:
+[live demo](https://watership.vercel.app/)
+![preview](./src/assets/screenshot.webp)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## what it does
 
-## React Compiler
+one habit, one question a day. if you did it, that day gets a pencil-sketch strikethrough on the calendar. that's it. no streaks, no points, no nonsense.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- daily yes/no check-in
+- month calendar with today highlighted
+- pencil-sketch strikethroughs for completed days
+- prev/next month navigation
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## stack
+
+- react
+- css
+- html i guess.. theres nothing else lol
+
+## running locally
+
+```bash
+git clone https://github.com/yourusername/watership
+cd watership
+npm install
+npm run dev
+```
+
+## roadmap
+
+- [ ] localStorage for persistence
+- [ ] retroactive calendar (see past completions)
+- [ ] multiple habits
+- [ ] deploy on vercel
+
+## why watership
+
+> *"All the world will be your enemy, Prince of a Thousand enemies. And when they catch you, they will kill you. But first they must catch you."*
+> — Watership Down
+
+just keep going.
+
+---
+
+made in meghalaya 🏔️
