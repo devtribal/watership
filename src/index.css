@@ -92,7 +92,16 @@ body {
 
 .month-year {
     padding: 0.5em;
-    font-size: 1.5em;
+    font-size: 2.5em;
+}
+
+.current-day {
+    text-shadow: 
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 20px #fff,
+        0 0 40px #fff,
+        0 0 80px #fff;
 }
 
 .calendar-area {
@@ -101,7 +110,6 @@ body {
     grid-auto-rows: 1fr;
     grid-column-gap: 1em;
 
-    border: 1px solid white;
-    border-radius: 4px;
-    padding: 1em;
+    text-align: center;
+    font-size: 2em;
 }

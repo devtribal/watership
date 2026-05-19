@@ -1,22 +1,43 @@
 import { useState } from "react";
 
 function Widget() {
+    const date = new Date();
+    // Get current month and year (Jan 2026) to display on calendar header
+    let monthString = date.toLocaleString("default", { month: "short" });
+    let year = date.getFullYear();
+    let month = date.getMonth();
+
     function createCalender() {
-        const days = [];
+        const dates = [];
+        const lastDay = new Date(year, month + 1, 0).getDate();
+
+        const firstDay = new Date(year, month, 1).getDay();
+
 
         let i = 0;
-        while (i < 30) {
+        while (i < firstDay) {
+            dates.push(<div />);
             i++;
-            days.push(<div>{i}</div>)
         }
 
-        return days;
+        i = 0;
+        while (i < lastDay) {
+            i++;
+
+            if (i === date.getDate()) {
+                dates.push(<div className="current-day">{i}</div>);
+            } else {
+                dates.push(<div>{i}</div>);
+            }
+        }
+
+        return dates;
     }
 
     return (
         <div className="widget-area">
-            <div className="month-year">Jan 2020</div>
-            <div className="calendar-area">
+            <div className="month-year"> {`${monthString} ${year}`} </div>
+            <div className="calendar-area"> 
                 <div>Sun</div>
                 <div>Mon</div>
                 <div>Tue</div>
@@ -24,7 +45,7 @@ function Widget() {
                 <div>Thu</div>
                 <div>Fri</div>
                 <div>Sat</div>
-                { createCalender() }
+                {createCalender()}
             </div>
         </div>
     );
@@ -45,7 +66,7 @@ function Task({ onYesClick, onNoClick }) {
 }
 
 function App() {
-    const [taskCompletion, setTaskCompletion] = useState(null);
+    const [, setTaskCompletion] = useState(null);
 
     function handleYesClick() {
         setTaskCompletion(true);
@@ -57,7 +78,7 @@ function App() {
 
     return (
         <div className="wrapper" >
-            <Task onYesClick={handleYesClick} onNoClick={handleNoClick}/>
+            <Task onYesClick={handleYesClick} onNoClick={handleNoClick} />
             <Widget />
         </div>
     );
