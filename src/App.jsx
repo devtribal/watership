@@ -1,16 +1,52 @@
 import { useState } from "react";
+import leftArrow from "./assets/left-arrow.svg";
+import rightArrow from "./assets/right-arrow.svg";
+const date = new Date();
 
 function Widget() {
-    const date = new Date();
     // Get current month and year (Jan 2026) to display on calendar header
-    let monthString = date.toLocaleString("default", { month: "short" });
-    let year = date.getFullYear();
-    let month = date.getMonth();
+    const [year, setYear] = useState(date.getFullYear());
+    const [month, setMonth] = useState(date.getMonth());
+    const monthString = new Date(year, month).toLocaleString("default", { month: "short" });
+    const [displayRightArrow, setDisplayRightArrow] = useState("none");
+
+    const [selectedDate, setSelectedDate] = useState(date.getDate());
+    const [selectedMonth, setSelectedMonth] = useState(date.getMonth());
+    const [selectedYear, setSelectedYear] = useState(date.getFullYear());
+
+    function handleLeftArrow() {
+        setDisplayRightArrow("block");
+        if (month === 0) {
+            setYear(prev => prev - 1);
+            setMonth(11);
+
+            return;   
+        }
+
+        setMonth(prev => prev - 1);
+    }
+
+    function handleRightArrow() {
+        const nextMonth = month === 11 ? 0 : month + 1;
+        const nextYear = month === 11 ? year + 1 : year;
+
+        if (nextMonth === date.getMonth() && nextYear === date.getFullYear()) {
+            setDisplayRightArrow("none");
+        }
+
+        if (month === 11) {
+            setYear(next => next + 1);
+            setMonth(0);
+
+            return;
+        }
+
+        setMonth(next => next + 1);
+    }
 
     function createCalender() {
         const dates = [];
         const lastDay = new Date(year, month + 1, 0).getDate();
-
         const firstDay = new Date(year, month, 1).getDay();
 
 
@@ -20,14 +56,18 @@ function Widget() {
             i++;
         }
 
+
         i = 0;
         while (i < lastDay) {
             i++;
 
-            if (i === date.getDate()) {
-                dates.push(<div className="current-day">{i}</div>);
+
+
+            if (i === selectedDate && month === selectedMonth && year === selectedYear) {
+                dates.push(<div className={`selected-date date-box`}>{i}</div>);
             } else {
-                dates.push(<div>{i}</div>);
+                let placeholderDate = i;
+                dates.push(<div className={"date-box"} onClick={() => { setSelectedDate(placeholderDate); setSelectedMonth(month); setSelectedYear(year)}} >{i}</div>);
             }
         }
 
@@ -36,7 +76,12 @@ function Widget() {
 
     return (
         <div className="widget-area">
-            <div className="month-year"> {`${monthString} ${year}`} </div>
+            <div className="month-year"> 
+                <img className="left-arrow" src={leftArrow} alt="left-arrow" onClick={handleLeftArrow} />
+                {`${monthString} ${year}`} 
+                <img style={{ display: displayRightArrow }} className="right-arrow" src={rightArrow} alt="right-arrow" onClick={handleRightArrow} />
+            </div>
+
             <div className="calendar-area"> 
                 <div>Sun</div>
                 <div>Mon</div>
