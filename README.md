@@ -33,10 +33,13 @@ npm run dev
 
 ## roadmap
 
-- [ ] localStorage for persistence
-- [ ] retroactive calendar (see past completions)
-- [ ] multiple habits
-- [ ] deploy on vercel
+- [x] deploy on vercel
+- [x] css grid calendar
+- [x] date picker
+- [ ] completion status checker
+- [ ] habit sidebar
+- [ ] past date editing
+- [ ] localStorage data persistence
 
 ## why watership
 
