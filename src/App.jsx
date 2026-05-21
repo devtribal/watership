@@ -3,16 +3,14 @@ import leftArrow from "./assets/left-arrow.svg";
 import rightArrow from "./assets/right-arrow.svg";
 const date = new Date();
 
-function Widget() {
+function Widget({ habits, selectedHabit }) {
     // Get current month and year (Jan 2026) to display on calendar header
     const [year, setYear] = useState(date.getFullYear());
     const [month, setMonth] = useState(date.getMonth());
     const monthString = new Date(year, month).toLocaleString("default", { month: "short" });
     const [displayRightArrow, setDisplayRightArrow] = useState("none");
 
-    const [selectedDate, setSelectedDate] = useState(date.getDate());
-    const [selectedMonth, setSelectedMonth] = useState(date.getMonth());
-    const [selectedYear, setSelectedYear] = useState(date.getFullYear());
+    const [selectedDate, setSelectedDate] = useState(new Date(year, month, date.getDate()).toLocaleDateString("en-GB"));
 
     function handleLeftArrow() {
         setDisplayRightArrow("block");
@@ -61,14 +59,38 @@ function Widget() {
         while (i < lastDay) {
             i++;
 
+            const currentDate = new Date(year, month, i).toLocaleDateString("en-GB");
 
+            const habit = habits.find((h) => h.category === selectedHabit);
 
-            if (i === selectedDate && month === selectedMonth && year === selectedYear) {
-                dates.push(<div className={`selected-date date-box`}>{i}</div>);
-            } else {
-                let placeholderDate = i;
-                dates.push(<div className={"date-box"} onClick={() => { setSelectedDate(placeholderDate); setSelectedMonth(month); setSelectedYear(year)}} >{i}</div>);
+            if (habit) {
+                if (habit.items.includes(currentDate) && currentDate === selectedDate) {
+                    dates.push(<div className={`completed-date selected-date date-box`}>{i}</div>);
+                } else if (habit.items.includes(currentDate)) {
+                                        let placeholderDate = currentDate;
+                    dates.push(<div className={`completed-date date-box`} onClick={() => { setSelectedDate(placeholderDate)}}>{i}</div>);
+                } else if (currentDate === selectedDate) {
+                    dates.push(<div className={`selected-date date-box`}>{i}</div>);
+                } else {
+                    let placeholderDate = currentDate;
+                    dates.push(<div className={"date-box"} onClick={() => { setSelectedDate(placeholderDate); }} >{i}</div>);
+                }
             }
+
+            // for (let x = 0; x < habits.length; x++) {
+            //     if (habits[x].category === selectedHabit) {
+            //         habits[x].items.forEach((date) => {
+            //             if (date === currentDate) {
+            //                 dates.push(<div className={`completed-date date-box`}>{i}</div>);
+            //             } else if (currentDate === selectedDate) {
+            //                 dates.push(<div className={`selected-date date-box`}>{i}</div>);
+            //             } else {
+            //                 let placeholderDate = currentDate;
+            //                 dates.push(<div className={"date-box"} onClick={() => { setSelectedDate(placeholderDate); }} >{i}</div>);
+            //             }
+            //         })
+            //     }
+            // }
         }
 
         return dates;
@@ -112,19 +134,24 @@ function Task({ onYesClick, onNoClick }) {
 
 function App() {
     const [, setTaskCompletion] = useState(null);
+    const [selectedHabit, setSelectedHabit] = useState("coding");
+
+    const [habits, setHabits] = useState([
+        { category: "coding", items: ["19/05/2026", "15/05/2026"] }
+    ]);
 
     function handleYesClick() {
-        setTaskCompletion(true);
+        
     }
 
     function handleNoClick() {
-        setTaskCompletion(false);
+        
     }
 
     return (
         <div className="wrapper" >
             <Task onYesClick={handleYesClick} onNoClick={handleNoClick} />
-            <Widget />
+            <Widget habits={habits} selectedHabit={selectedHabit} />
         </div>
     );
 }

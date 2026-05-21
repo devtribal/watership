@@ -129,6 +129,10 @@ body {
         0 0 80px #fff;
 }
 
+.completed-date {
+    color: red;
+}
+
 .date-box:hover {
     cursor: pointer ;
 }
