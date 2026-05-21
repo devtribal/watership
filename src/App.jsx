@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import leftArrow from "./assets/left-arrow.svg";
 import rightArrow from "./assets/right-arrow.svg";
 const date = new Date();
 
-function Widget({ habits, selectedHabit }) {
-    // Get current month and year (Jan 2026) to display on calendar header
+function Widget({ habits, selectedHabit, selectedDate, setSelectedDate }) {
     const [year, setYear] = useState(date.getFullYear());
     const [month, setMonth] = useState(date.getMonth());
     const monthString = new Date(year, month).toLocaleString("default", { month: "short" });
     const [displayRightArrow, setDisplayRightArrow] = useState("none");
 
-    const [selectedDate, setSelectedDate] = useState(new Date(year, month, date.getDate()).toLocaleDateString("en-GB"));
+    useEffect(() => {
+        setSelectedDate(new Date(year, month, date.getDate()).toLocaleDateString("en-GB"));
+    }, []);
 
     function handleLeftArrow() {
         setDisplayRightArrow("block");
@@ -65,32 +66,17 @@ function Widget({ habits, selectedHabit }) {
 
             if (habit) {
                 if (habit.items.includes(currentDate) && currentDate === selectedDate) {
-                    dates.push(<div className={`completed-date selected-date date-box`}>{i}</div>);
+                    dates.push(<div className={`completed-date selected-date date-box`} key={i}>{i}</div>);
                 } else if (habit.items.includes(currentDate)) {
-                                        let placeholderDate = currentDate;
-                    dates.push(<div className={`completed-date date-box`} onClick={() => { setSelectedDate(placeholderDate)}}>{i}</div>);
+                    let placeholderDate = currentDate;
+                    dates.push(<div className={`completed-date date-box`} onClick={() => { setSelectedDate(placeholderDate)}} key={i}>{i}</div>);
                 } else if (currentDate === selectedDate) {
-                    dates.push(<div className={`selected-date date-box`}>{i}</div>);
+                    dates.push(<div className={`selected-date date-box`} key={i}>{i}</div>);
                 } else {
                     let placeholderDate = currentDate;
-                    dates.push(<div className={"date-box"} onClick={() => { setSelectedDate(placeholderDate); }} >{i}</div>);
+                    dates.push(<div className={"date-box"} onClick={() => { setSelectedDate(placeholderDate); }} key={i}>{i}</div>);
                 }
             }
-
-            // for (let x = 0; x < habits.length; x++) {
-            //     if (habits[x].category === selectedHabit) {
-            //         habits[x].items.forEach((date) => {
-            //             if (date === currentDate) {
-            //                 dates.push(<div className={`completed-date date-box`}>{i}</div>);
-            //             } else if (currentDate === selectedDate) {
-            //                 dates.push(<div className={`selected-date date-box`}>{i}</div>);
-            //             } else {
-            //                 let placeholderDate = currentDate;
-            //                 dates.push(<div className={"date-box"} onClick={() => { setSelectedDate(placeholderDate); }} >{i}</div>);
-            //             }
-            //         })
-            //     }
-            // }
         }
 
         return dates;
@@ -120,38 +106,50 @@ function Widget({ habits, selectedHabit }) {
 
 
 
-function Task({ onYesClick, onNoClick }) {
+function Task({ habits, setHabits, selectedDate, selectedHabit }) {
+    function handleYesButton() {
+        setHabits(prev => prev.map(h => 
+            h.category === selectedHabit 
+            ? { ...h, items: [...h.items, selectedDate]}
+            : h
+        ))
+    }
+
+    function handleNoButton() {
+        setHabits(prev => prev.map(h => {
+            if (h.category === selectedHabit && h.items.includes(selectedDate)) {
+                const tempArray = h.items.slice();
+                const selectedDateIndex = tempArray.indexOf(selectedDate);
+                tempArray.splice(selectedDateIndex, 1);
+                return {...h, items: tempArray};
+            }
+            return h;
+        }))
+    }
+
     return (
         <div className="task-area">
             <p className="task-message">Did you do this task today?</p>
             <div className="task-button-wrapper">
-                <button className="task-button" onClick={onYesClick} >Yes</button>
-                <button className="task-button" onClick={onNoClick} >No</button>
+                <button className="task-button" onClick={handleYesButton} >Yes</button>
+                <button className="task-button" onClick={handleNoButton} >No</button>
             </div>
         </div>
     );
 }
 
 function App() {
-    const [, setTaskCompletion] = useState(null);
     const [selectedHabit, setSelectedHabit] = useState("coding");
+    const [selectedDate, setSelectedDate] = useState(null);
 
     const [habits, setHabits] = useState([
-        { category: "coding", items: ["19/05/2026", "15/05/2026"] }
+        { category: "coding", items: ["19/05/2026", "15/05/2026", "03/03/2026"] }
     ]);
-
-    function handleYesClick() {
-        
-    }
-
-    function handleNoClick() {
-        
-    }
 
     return (
         <div className="wrapper" >
-            <Task onYesClick={handleYesClick} onNoClick={handleNoClick} />
-            <Widget habits={habits} selectedHabit={selectedHabit} />
+            <Task habits={habits} setHabits={setHabits} selectedDate={selectedDate} selectedHabit={selectedHabit} />
+            <Widget habits={habits} selectedHabit={selectedHabit} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
         </div>
     );
 }
